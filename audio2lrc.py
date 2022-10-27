@@ -1,7 +1,5 @@
-import sys
-import whisper
-import swapsub
-import os
+import sys,whisper,swapsub,os
+from datetime import datetime
 from whisper.utils import write_srt
 
 if __name__ == '__main__' :
@@ -12,8 +10,10 @@ if __name__ == '__main__' :
         # whisper转录
         # 可选模型请见https://github.com/openai/whisper#available-models-and-languages
         # 请用链接中选项替换，默认base
+        tic = datetime.now()
         model = whisper.load_model("base")
         result = model.transcribe(sys.argv[1])
+        toc = datetime.now()
         print("Transcription completed!\n")
         print(result["text"])
         #读取文件名
@@ -29,5 +29,6 @@ if __name__ == '__main__' :
         if len(sys.argv)==2:
             os.remove(name + ".srt")
         else:
-            print("srt has been exported at",name+".srt")
+            print("srt has been exported at",name+".srt\n")
         print("lrc has been exported at",name+".lrc")
+        print('\ntotal time: %f seconds\n' % (toc-tic).total_seconds())
